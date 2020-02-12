@@ -1,0 +1,56 @@
+<html>
+    <head>
+
+
+    </head>
+    <body>
+        <div id = "repository_list">
+            <h1> </h1>
+        </div>
+       
+
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+function get_test_question_id(test_question_id){
+    data = JSON.stringify({"repository_id": test_question_id})
+    console.log(data)
+    $.ajax({
+    type:"POST",
+    contentType: 'application/json;charset=UTF-8',
+  url: "/showCommandString",
+  cache: false,
+  data:data,
+  success: function(result)
+  {
+    $("#repository_list").empty()
+        $("#repository_list").append( "Please enter this command " + result["command_string1"]+"<br>Please solve the question<br> And run the following command "+result["command_string2"])
+ 
+
+  }
+})
+}
+$(document).ready(function(){
+
+$.ajax({
+    type:"GET",
+  url: "/showAllQuestions",
+  cache: false,
+  success: function(result)
+  {
+    result_array = result["question_list"]
+    console.log(result_array)
+    for(i=0;i<result_array.length;i++)
+     {
+        $("#repository_list").append("<h4 onclick = get_test_question_id("+ result_array[i]["test_question_id"]+")>"+result_array[i]["test_question"] +"</h4>")
+
+} 
+
+  }
+});
+
+
+
+});
+    </script>
+</html>
